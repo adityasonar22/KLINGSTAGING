@@ -11,8 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-
-
+import io.github.bonigarcia.wdm.WebDriverManager;
 import utilityPackage.ExcelFileReader;
 
 public class BaseInit {
@@ -26,8 +25,6 @@ public class BaseInit {
 	public static ExcelFileReader tsa = null;
 	
 	public static Logger logs;
-	
-	
 	
 	public void startUP() throws Exception {
 		
@@ -48,25 +45,27 @@ public class BaseInit {
 			logs.info("Browser will be launching");
 			
 			String browserVal = sitedata.getProperty("browser");
-			
-			if(browserVal.equalsIgnoreCase("chrome")) {
+
+			if (browserVal.equalsIgnoreCase("chrome")) {
 				
-				System.setProperty("webdriver.chrome.driver", "D:\\Browsers Driver\\ChromeDriver\\chromedriver-win64\\chromedriver.exe");
-				driver = new ChromeDriver();
-				logs.info("Chrome browser launched");
+				WebDriverManager.chromedriver().setup(); 
+			    
+			    driver = new ChromeDriver();
+			    
+			    logs.info("Chrome browser launched");
+			    
+			} else if (browserVal.equalsIgnoreCase("firefox")) {
 				
-			}else if(browserVal.equalsIgnoreCase("firefox")) {
+			    System.setProperty("webdriver.gecko.driver", "Give path of FireFox Driver.Exe File?");
+			    
+			    driver = new FirefoxDriver();
+			    
+			    logs.info("Firefox browser launched");
+			    
+			} else {
 				
-				System.setProperty("webdriver.gecko.driver", "Give path of FireFox Driver.Exe File?");
-				driver= new FirefoxDriver();
-				logs.info("Firefox browser launched");
-				
-			}else {
-				
-				logs.info("There is no browser defined");
-				
+			    logs.info("There is no browser defined");
 			}
-			
 			
 			driver.manage().window().maximize();
 			logs.info("Window is Maximized");
@@ -80,7 +79,8 @@ public class BaseInit {
 			ts = new ExcelFileReader("./src/main/resources/testInformation/TestSuites.xlsx");
 			tsa = new ExcelFileReader("./src/main/resources/testInformation/websitePanel.xlsx");
 			logs.info("Excel file object has been created...");
-			
+			logs.info("Tester Name:- Aditya Sonar");
+			logs.info("Team Name:- TIGER");
 		}
 		
 }

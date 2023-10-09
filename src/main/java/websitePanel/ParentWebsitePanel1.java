@@ -19,13 +19,7 @@ public class ParentWebsitePanel1 extends BaseInit {
 			
 			throw new SkipException("Execution mode of the TestSuite Web Site Panel is set NO ");
 		}
-		
-		
-		
 	}
-
-	
-	
 }
 
 

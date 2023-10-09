@@ -3,7 +3,6 @@ package utilityPackage;
 import java.io.File;
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -24,7 +23,6 @@ import basePackage.BaseInit;
 		}
 		
 		/*
-		
 		public static boolean checkTestExecution() {
 			ExcelFileReader data = new ExcelFileReader("Path of your TestSuite.xlsx");
 			int rows = data.totalRow("sheetName");
