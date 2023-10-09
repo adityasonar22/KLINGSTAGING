@@ -2,6 +2,8 @@ package utilityPackage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -22,71 +24,32 @@ import basePackage.BaseInit;
 			
 		}
 		
-		/*
-		public static boolean checkTestExecution() {
-			ExcelFileReader data = new ExcelFileReader("Path of your TestSuite.xlsx");
-			int rows = data.totalRow("sheetName");
-			 for(int row=1;row<rows;row++) {
-			  String testSuiteName = data.getData("SheetName", row, 0);
-			   if(testSuiteName.equalsIgnoreCase("TestSuiteC")){
-			    String exeMode=data.getData("testSuiteName", row, 2);
-			     if(exeMode.equalsIgnoreCase("Y"))
-			      return true;
-			      else
-			      return false;
-		}
-	}return false;
-}
-		*/
 		
-		public static boolean checkTestSuiteExecution(ExcelFileReader data, String sheetName, String testSuiteName) {
-			int rows = data.totalRow(sheetName);
-			for(int row=1;row<rows;row++) {
-				String testsuiteName = data.getData(sheetName, row, 0);
-					if(testSuiteName.equalsIgnoreCase(testsuiteName)) {
-						String exeMode = data.getData(sheetName, row, 2);{
-							if(exeMode.equalsIgnoreCase("Y")) 
-								return true;
-							else 
-								return false;
-				}
-			}
-		}return false;
-	}	
-			
-			
-		public static boolean checkTestCaseEcecution(ExcelFileReader data, String sheetName, String testCaseName) {
-				int rows =data.totalRow(sheetName);
-				for(int row=1;row<rows;row++) {
-					String testcaseName = data.getData(sheetName, row, 0);
-						if(testCaseName.equalsIgnoreCase(testcaseName)) {
-							String exeMode = data.getData(sheetName, row, 2);{
-								if(exeMode.equalsIgnoreCase("Y"))
-									return true;
-								else
-									return false;
-						 }
-			         }
-	              }return false;
-			}	
+		
+		
 		
 		
 		public static Object[][] getTestData(ExcelFileReader data, String sheetName) {
-			
-			int cols = data.totalColumn(sheetName);
-			int rows = data.totalRow(sheetName);
-			
-			Object[][] myData = new Object[rows-1][cols];
-			
-			for(int row=1;row<rows;row++) {
-				
-				for(int col=0;col<cols;col++) {
-					
-					myData[row-1][col] = data.getData(sheetName, row, col);
-				}
-			}
-			
-			return myData;
+		    List<List<Object>> testData = new ArrayList<>();
+		    List<Integer> integers = data.readIntegers(sheetName, 0); // Integers in the first column
+		    List<String> xpaths = data.readXPaths(sheetName, 1); // Xpaths in the second column
+
+		    int size = Math.min(integers.size(), xpaths.size());
+
+		    for (int i = 0; i < size; i++) {
+		        List<Object> rowData = new ArrayList<>();
+		        rowData.add(integers.get(i));
+		        rowData.add(xpaths.get(i));
+		        testData.add(rowData);
+		    }
+
+		    Object[][] myData = new Object[testData.size()][2]; // 2 columns: integer and xpath
+
+		    for (int i = 0; i < testData.size(); i++) {
+		        myData[i] = testData.get(i).toArray();
+		    }
+
+		    return myData;
 		}
 		
 		

@@ -2,112 +2,68 @@ package utilityPackage;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 
 public class ExcelFileReader {
 
-	XSSFWorkbook wb;
-	XSSFSheet sheet;
-	File file;
-	String filePath;
-	FileInputStream fi;
-	
+    private XSSFWorkbook workbook;
 
-	public ExcelFileReader(String filePath) {
+    public ExcelFileReader(String filePath) {
+        try (FileInputStream fis = new FileInputStream(new File(filePath))) {
+            workbook = new XSSFWorkbook(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-		this.filePath = filePath;
+    public List<Integer> readIntegers(String sheetName, int columnNumber) {
+        List<Integer> integers = new ArrayList<>();
+        Sheet sheet = workbook.getSheet(sheetName);
+        Iterator<Row> rowIterator = sheet.iterator();
 
-		try {
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            Cell cell = row.getCell(columnNumber);
+            if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+                integers.add((int) cell.getNumericCellValue());
+            }
+        }
 
-			file = new File(filePath);
-			fi = new FileInputStream(file);
-			wb = new XSSFWorkbook(fi);
+        return integers;
+    }
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public List<String> readXPaths(String sheetName, int columnNumber) {
+        List<String> xpaths = new ArrayList<>();
+        Sheet sheet = workbook.getSheet(sheetName);
+        Iterator<Row> rowIterator = sheet.iterator();
 
-	}
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            Cell cell = row.getCell(columnNumber);
+            if (cell != null && cell.getCellType() == CellType.STRING) {
+                xpaths.add(cell.getStringCellValue());
+            }
+        }
 
-	
-	
-	public int totalRow(String sheetName) {
+        return xpaths;
+    }
 
-		sheet = wb.getSheet(sheetName);
-
-		int rows = sheet.getLastRowNum() + 1;
-		return rows;
-
-	}
-	
-	
-
-	public int totalColumn(String sheetName) {
-
-		sheet = wb.getSheet(sheetName);
-		int cols = sheet.getRow(0).getLastCellNum();
-		// cols = cols - 1; //Edited by Tanmay
-		// cols = cols + 1;
-
-		return cols;
-	}
-	
-	
-	
-
-	public String getData(String sheetName, int rowNum, int columnNum) {
-
-		String data;
-
-		try {
-			data = wb.getSheet(sheetName).getRow(rowNum).getCell(columnNum).getStringCellValue();
-		} catch (Exception e) {
-
-			double d = wb.getSheet(sheetName).getRow(rowNum).getCell(columnNum).getNumericCellValue();
-			data = String.valueOf(d);
-		}
-
-		return data;
-
-	}
-	
-	
-	
-
-	public void setData(String sheetName, int rowNum, int columnNum, String data) {
-
-		System.out.println(sheetName);
-		System.out.println(rowNum);
-		System.out.println(columnNum);
-		System.out.println(data);
-
-		try {
-
-			file = new File(filePath);
-			fi = new FileInputStream(file);
-			wb = new XSSFWorkbook(fi);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(filePath);
-		wb.getSheet(sheetName).getRow(rowNum).createCell(columnNum).setCellValue(data);
-
-		try {
-			FileOutputStream fo = new FileOutputStream(new File(filePath));
-
-			wb.write(fo);
-			wb.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
+    public void close() {
+        try {
+            if (workbook != null) {
+                workbook.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

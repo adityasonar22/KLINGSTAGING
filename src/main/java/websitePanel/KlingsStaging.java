@@ -3,26 +3,16 @@ package websitePanel;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.testng.SkipException;
-import org.testng.annotations.BeforeTest;
+
 import org.testng.annotations.Test;
 
 
-import utilityPackage.MyMethods;
+
 
 
 public class KlingsStaging extends ParentWebsitePanel1  {
 	
-	@BeforeTest
-	public void checkTestCase() {
-		
-	boolean output = MyMethods.checkTestCaseEcecution(tsa, "Sheet1",this.getClass().getSimpleName());
 	
-	if(!output) {
-		
-		throw new SkipException("Execution mode of the test cases"+this.getClass().getSimpleName()+"is set to NO");
-	}
-}
 	
 	@Test
 	public void testKlingsStaging() throws InterruptedException {
