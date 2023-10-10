@@ -6,7 +6,6 @@
       <class name="websitePanel.KlingsStaging">
         <methods>
           <include name="testKlingsStaging"/>
-          <include name="checkTestCase"/>
           <include name="checkTestSuite"/>
         </methods>
       </class> <!-- websitePanel.KlingsStaging -->

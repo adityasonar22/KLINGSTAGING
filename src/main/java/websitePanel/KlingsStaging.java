@@ -31,7 +31,7 @@ public class KlingsStaging extends ParentWebsitePanel1  {
 		
 		driver.findElement(By.xpath("//*[@id=\"controlled-tab-example-tabpane-login\"]/div/form/div/button")).click();
 		logs.info("User LogIN Sucessfully");
-		Thread.sleep(10000);
+		Thread.sleep(5000);
 		
 		WebElement spimmwheels = driver.findElement(By.xpath("//*[@id=\"justify-tab-example-tabpane-Inhouse\"]/div/div[1]/div/a"));
 		spimmwheels.click();
@@ -43,12 +43,13 @@ public class KlingsStaging extends ParentWebsitePanel1  {
 		logs.info("User clear existing amount");
 		
 		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div[1]/div/div[2]/form/div[1]/input")).sendKeys("3");
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		logs.info("User enter amount");
 		
-		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div[2]/div[1]/div[1]/button")).click();
+		WebElement btn= driver.findElement(By.xpath("//*[@id=\"outletDiv\"]/div[1]/div[1]/div/div[2]/div/div[1]/div[1]/button"));
+		btn.click();
 		logs.info("User Select Spinn Wheels");
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		
 		driver.findElement(By.xpath("//*[@id=\"root\"]/div/div[1]/div[2]/div[2]/div[1]/div[1]/div/div[1]/div/div[2]/form/button")).click();
 		logs.info("User click on Spinn Wheels Button");
